@@ -1,42 +1,46 @@
-# Política de Seguridad
+# Security policy
 
-## Versiones soportadas
-Actualmente, la versión soportada para uso estable en producción es:
+## Preserved release
 
-- `v10.2.1` (**Vstable**)
+This repository preserves VTutor `10.2.1`, project label `v10.2.1 Vstable`,
+Moodle build `2026022203`.
 
-Las ramas experimentales (por ejemplo, funcionalidades RAG, pruebas de indexación o mejoras en desarrollo) **no se consideran versiones estables para producción**.
+`MATURITY_STABLE` is the maturity value declared by the artifact. It is not a
+claim of comprehensive security certification.
 
----
+## Reporting a vulnerability
 
-## Cómo reportar una vulnerabilidad
+Do not disclose an unpatched vulnerability in a public issue. Contact the
+repository owner through a private channel and include:
 
-Si identifica una posible vulnerabilidad de seguridad en VTutor (`block_ai_tutor`), por favor **no la publique primero en un issue público**.
+- Moodle, PHP, database, web-server, and plugin versions;
+- affected configuration;
+- reproducible steps;
+- expected and observed behavior;
+- potential impact; and
+- minimal redacted evidence.
 
-Al reportar una vulnerabilidad, incluya la siguiente información:
+Do not send API keys, credentials, student data, or unredacted production logs.
 
-- **Versión de Moodle**
-- **Versión de PHP**
-- **Versión del plugin VTutor**
-- **Descripción del problema**
-- **Pasos para reproducir**
-- **Impacto potencial**
-- **Evidencia disponible** (capturas, logs o mensajes de error, si aplica)
+## Security boundaries
 
----
+- AI-provider credentials must not be committed to the repository.
+- Provider endpoints, models, and data-processing terms can change after this
+  artifact's freeze date and must be reviewed at deployment time.
+- Conversation history contains user-linked educational data.
+- External providers can receive message, history, and course context depending
+  on configuration.
+- Advanced RAG was outside the evaluated stable study.
+- The release does not claim a complete penetration test, dependency audit,
+  load test, or independent security review.
 
-## Alcance de esta política
-Esta política aplica al plugin **VTutor (`block_ai_tutor`)** publicado en este repositorio y, de forma prioritaria, a su línea estable:
+## Deployment recommendations
 
-- `v10.2.1 (Vstable)`
-
-Las funcionalidades en ramas experimentales pueden cambiar sin previo aviso y no están cubiertas como entorno de producción.
-
----
-
-## Recomendación de uso seguro
-Para entornos institucionales o sitios Moodle en producción, se recomienda utilizar únicamente la versión:
-
-- **`v10.2.1 (Vstable)`**
-
-y validar cualquier mejora futura primero en un entorno de pruebas antes de implementarla en producción.
+1. Back up before installation or upgrade.
+2. Test in a non-critical environment.
+3. Restrict configuration to authorized administrators.
+4. Set `block_ai_tutor/rag_enabled = 0` for the studied Vstable configuration.
+5. Apply data-minimization, retention, access-control, and incident-response
+   policies.
+6. Verify privacy export and deletion behavior in the target Moodle instance.
+7. Record the exact deployed checksum and configuration.

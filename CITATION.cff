@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the archived software release."
+type: software
+title: "VTutor v10.2.1 Vstable (block_ai_tutor): a Moodle block for AI-supported conversational tutoring"
+abstract: >-
+  VTutor is a Moodle block that provides AI-supported conversational tutoring
+  inside courses. Version 10.2.1 Vstable, Moodle build 2026022203, preserves the
+  technical-stabilization artifact frozen on 22 February 2026. The release
+  documents functional stabilization and operational governance; it does not
+  claim pedagogical effectiveness, independent replication, or a
+  production-validated advanced retrieval-augmented generation system.
+authors:
+  - family-names: "Aldaz Herrera"
+    given-names: "Nelson Marcelo"
+    orcid: "https://orcid.org/0000-0002-4004-7378"
+version: "10.2.1-Vstable"
+date-released: 2026-02-22
+license: GPL-3.0-or-later
+repository-code: "https://github.com/marcelo-aldaz/VTUTOR"
+url: "https://github.com/marcelo-aldaz/VTUTOR"
+keywords:
+  - Moodle
+  - artificial intelligence
+  - conversational tutoring
+  - educational software
+  - learning management system
+  - Human-in-the-Loop
+  - technical stabilization

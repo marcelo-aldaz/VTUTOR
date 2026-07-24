@@ -1,18 +1,17 @@
-# Hoja de ruta (Roadmap)
+# Historical roadmap notice
 
-## Línea estable (v10.2.x)
-### v10.2.1 (Vstable)
-- UX flotante estable
-- Panel RAG desactivado en línea estable
+This repository freezes VTutor v10.2.1 Vstable, build `2026022203`. It is not
+the roadmap for later VTutor Pro or VTutor Pro VZona products.
 
-### v10.2.2 (pruebas)
-- Mejoras UX visual
-- Mejor móvil/tablet
-- Menos ruido markdown
-- Scroll más estable
+## Frozen line
 
-## Línea experimental (v11-RAG)
-- Diagnóstico RAG
-- Indexación por curso
-- Retrieval contextual
-- Lectura de archivos
+- Conversational Moodle block.
+- Technical stabilization completed on 22 February 2026.
+- Advanced RAG excluded from the evaluated stable study.
+
+## Later work
+
+Later UX, retrieval, and institutional-assistant experiments must use their own
+version identifiers, evidence sets, branches or repositories, release notes,
+and Zenodo records. Their implementation status must not be inferred from this
+historical file.

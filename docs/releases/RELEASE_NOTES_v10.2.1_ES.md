@@ -1,17 +1,18 @@
-# VTutor v10.2.1 (Vstable)
+# VTutor v10.2.1 Vstable
 
-## Resumen
-Versión estable de producción (Vstable) para VTutor en Moodle.
+Este archivo se conserva por compatibilidad con enlaces anteriores.
 
-## Estado
-- ✅ Recomendada para producción
-- ✅ Validada en entorno real
-- ⚠️ RAG avanzado fuera de esta línea
+Las notas corregidas y calificadas según la evidencia están en:
 
-## Incluye
-- UX flotante estable
-- Panel RAG experimental neutralizado/desactivado
-- Limpieza visual de etiquetas administrativas (si aplica)
+[`RELEASE_NOTES_v10.2.1_VSTABLE.md`](RELEASE_NOTES_v10.2.1_VSTABLE.md)
 
-## No incluye (intencionalmente)
-- RAG avanzado / diagnóstico / reindexación / lectura automática de archivos
+Identidad:
+
+- Componente: `block_ai_tutor`.
+- Versión: `10.2.1`.
+- Build Moodle: `2026022203`.
+- Congelamiento: 22 de febrero de 2026.
+
+El resultado histórico `8/8` es evidencia documental, no una nueva validación
+independiente. El RAG avanzado y los desarrollos posteriores VTutor Pro/VZona
+quedan fuera de esta publicación.
