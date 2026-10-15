@@ -1,0 +1,6 @@
+cff-version: 1.2.0
+message: "If you use VTutor Pro VZona in research or practice, cite this software release and its archived DOI when available."
+title: "VTutor Pro VZona for Moodle"
+type: software
+version: "10.6.5-stable"
+license: GPL-3.0-or-later

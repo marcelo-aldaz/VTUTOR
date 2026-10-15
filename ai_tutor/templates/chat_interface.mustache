@@ -1,0 +1,802 @@
+<div class="vtutor-container {{#standalone}}vtutor-container-standalone{{/standalone}}" data-standalone="{{#standalone}}1{{/standalone}}{{^standalone}}0{{/standalone}}">
+    <div class="vtutor-header">
+        <div class="vtutor-brand">
+            <div class="vtutor-brand-mark">
+                <img src="{{logoimage}}" alt="{{institutionname}}">
+            </div>
+            <div class="vtutor-title-wrap">
+                <div class="vtutor-badge-row">
+                    <span class="vtutor-badge">V-Zona</span>
+                    <span class="vtutor-badge vtutor-badge-soft">Línea profesional</span>
+                </div>
+                <div class="vtutor-title">VTutor Pro - {{institutionname}}</div>
+                <div class="vtutor-subtitle">{{institutionsubtitle}}</div>
+            </div>
+        </div>
+        <button id="vtutor-close-floating-btn" class="vtutor-icon-btn vtutor-close-floating" title="Cerrar/Acoplar" style="display:none;">✕</button>
+        <div class="vtutor-header-actions">
+            <button id="vtutor-float-btn" class="vtutor-icon-btn" title="Desacoplar ventana">🗗</button>
+            <button id="vtutor-expand-btn" class="vtutor-icon-btn" title="Pantalla grande">⤢</button>
+        </div>
+    </div>
+
+    {{#showadminlink}}
+    <div class="vtutor-adminbar">
+        ⚙️ <a href="{{adminurl}}" target="_blank" rel="noopener">Configurar VTutor (Administrador)</a>
+    </div>
+    {{/showadminlink}}
+
+    <div class="vtutor-coursebar">
+        <div class="vtutor-coursechip">Curso: {{coursename}}</div>
+        {{#showcontrolcenterlink}}<a href="{{controlcenterurl}}" class="vtutor-coursechip vtutor-coursechip-soft vtutor-coursechip-link" target="_blank" rel="noopener">{{controlcenterlabel}}</a>{{/showcontrolcenterlink}}
+    </div>
+
+    <div class="vtutor-modebar">
+        <label for="vtutor-mode-select" class="vtutor-mode-label">Modo de trabajo</label>
+        <select id="vtutor-mode-select" class="vtutor-mode-select">
+            <option value="tutorial">Tutoría</option>
+            <option value="autoevaluacion">Autoevaluación</option>
+            <option value="refuerzo">Refuerzo</option>
+            <option value="recursos">Recursos</option>
+        </select>
+        <div class="vtutor-modebar-actions">
+            <button id="vtutor-clear-btn" data-vtutor-clear="1" class="vtutor-toolbar-btn" type="button" title="Limpiar conversación">
+                <span aria-hidden="true">🗑️</span>
+                <span>Limpiar</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="vtutor-chat-history" class="vtutor-chat-history">
+        <div class="vtutor-message vtutor-system">
+            <div class="vtutor-msg-content">
+👋 Bienvenido, {{firstname}}. Soy <strong>VTutor Pro</strong>. Puedo apoyarle con consultas del curso, análisis documental, criterios técnicos y orientación profesional. ¿Qué necesita resolver hoy?
+            </div>
+        </div>
+    </div>
+
+    <div id="vtutor-loading" class="vtutor-loading" style="display:none;">
+        <div class="vtutor-spinner"></div>
+        <span>VTutor está pensando...</span>
+    </div>
+
+    <div id="vtutor-voice-status" class="vtutor-voice-status" style="display:none;"></div>
+
+    <div class="vtutor-input-area">
+        <button id="vtutor-dictate-btn" class="vtutor-voice-btn" type="button" title="Dictar pregunta">🎤</button>
+        <button id="vtutor-stop-dictation-btn" class="vtutor-voice-btn vtutor-stop-btn" type="button" title="Detener dictado" style="display:none;">⏹</button>
+        <textarea id="vtutor-user-input" placeholder="Escriba o dicte su consulta profesional aquí..." rows="2"></textarea>
+        <button id="vtutor-send-btn" class="vtutor-send-btn" title="Enviar pregunta">
+            <span>📤</span>
+        </button>
+    </div>
+
+    <div class="vtutor-footer">
+        <small>⚠️ {{institutionfooter}}</small>
+    </div>
+</div>
+
+{{#showlauncherbutton}}
+<button id="vtutor-launcher-btn" class="vtutor-floating-launcher" type="button" title="{{launchertitle}}" aria-label="{{launchertitle}}" aria-expanded="false" style="display:none; background: {{launcherbg}}; color: {{launcherfg}}; border: 1px solid {{launcherborder}};">
+    <span class="vtutor-launcher-icon" aria-hidden="true"><img src="{{logoimage}}" alt=""></span>
+    <span class="vtutor-launcher-label">{{launcherlabel}}</span>
+</button>
+{{/showlauncherbutton}}
+
+<style>
+:root {
+    --vtutor-mobile-vh: 100dvh;
+    --vtutor-safe-bottom: env(safe-area-inset-bottom, 0px);
+    --vtutor-brand-900: #0d2f4f;
+    --vtutor-brand-800: #124167;
+    --vtutor-brand-700: #1b5a87;
+    --vtutor-surface: #ffffff;
+    --vtutor-border: #d8e1ea;
+    --vtutor-muted: #5d6b79;
+    --vtutor-soft: #f4f7fa;
+    --vtutor-soft-2: #eef3f7;
+    --vtutor-text: #17212b;
+}
+
+html.vtutor-standalone-html,
+body.vtutor-standalone-body {
+    background: #eef3f7;
+    margin: 0;
+    padding: 0 !important;
+    width: 100%;
+    height: 100%;
+    overflow: hidden !important;
+}
+
+body.vtutor-standalone-body #page,
+body.vtutor-standalone-body #page-content,
+body.vtutor-standalone-body #region-main-box,
+body.vtutor-standalone-body #region-main,
+body.vtutor-standalone-body .region-main,
+body.vtutor-standalone-body [role="main"] {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    overflow: hidden !important;
+    background: transparent !important;
+}
+
+.vtutor-container,
+.vtutor-container *,
+.vtutor-floating-launcher,
+.vtutor-floating-launcher * {
+    box-sizing: border-box;
+}
+
+.vtutor-container {
+    display: flex;
+    flex-direction: column;
+    width: min(100%, 1340px);
+    margin: 0 auto;
+    height: min(960px, calc(var(--vtutor-mobile-vh) - 20px));
+    min-height: 560px;
+    max-height: min(960px, calc(var(--vtutor-mobile-vh) - 20px));
+    overflow: hidden;
+    border: 1px solid #cfd9e3;
+    border-radius: 16px;
+    background: var(--vtutor-surface);
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.10);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--vtutor-text);
+    min-width: 0;
+}
+
+.vtutor-container-standalone {
+    position: fixed !important;
+    inset: 8px;
+    width: auto !important;
+    max-width: none;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    margin: 0 !important;
+    z-index: 2;
+}
+
+.vtutor-window-expanded {
+    inset: 8px !important;
+}
+
+.vtutor-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.10);
+    min-height: 74px;
+    background: linear-gradient(135deg, var(--vtutor-brand-900) 0%, var(--vtutor-brand-800) 52%, var(--vtutor-brand-700) 100%);
+    color: #fff;
+}
+
+.vtutor-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.vtutor-brand-mark {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border-radius: 12px;
+    background: rgba(255,255,255,.10);
+    border: 1px solid rgba(255,255,255,.16);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.vtutor-brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vtutor-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.vtutor-badge-row {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.vtutor-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.16);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.vtutor-badge-soft {
+    background: rgba(255,255,255,0.08);
+}
+
+.vtutor-title {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.vtutor-subtitle {
+    font-size: 12px;
+    line-height: 1.3;
+    opacity: .92;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.vtutor-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.vtutor-icon-btn,
+.vtutor-clear-btn {
+    border: 1px solid rgba(255,255,255,.24);
+    background: rgba(255,255,255,.10);
+    color: #fff;
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.vtutor-icon-btn:hover,
+.vtutor-clear-btn:hover {
+    background: rgba(255,255,255,.18);
+}
+
+.vtutor-close-floating {
+    margin-left: 4px;
+}
+
+.vtutor-adminbar {
+    padding: 8px 12px;
+    background: #fff4cf;
+    border-bottom: 1px solid #e9d8a4;
+    font-size: 12px;
+}
+
+.vtutor-adminbar a {
+    color: #103c63;
+    font-weight: 600;
+}
+
+.vtutor-coursebar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px 0 14px;
+    flex-wrap: wrap;
+    background: #fff;
+}
+
+.vtutor-coursechip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 36px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--vtutor-border);
+    background: var(--vtutor-soft);
+    color: #153756;
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.vtutor-coursechip-soft {
+    background: #f7fafc;
+}
+
+.vtutor-coursechip-link {
+    text-decoration: none;
+}
+
+.vtutor-coursechip-link:hover {
+    text-decoration: none;
+    background: #e9f1f7;
+}
+
+.vtutor-modebar {
+    display: grid;
+    grid-template-columns: auto minmax(0, 280px) 1fr;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px 12px 14px;
+    border-bottom: 1px solid var(--vtutor-border);
+    background: #fff;
+}
+
+.vtutor-modebar-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.vtutor-mode-label {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: #22384c;
+}
+
+.vtutor-mode-select {
+    min-width: 0;
+    width: 100%;
+    max-width: 280px;
+    border: 1px solid #c5d2df;
+    border-radius: 10px;
+    padding: 10px 12px;
+    background: #fff;
+    color: #17324c;
+}
+
+.vtutor-toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid #c9d4de;
+    background: linear-gradient(180deg, #ffffff 0%, #f6f9fc 100%);
+    color: #18354f;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+}
+
+.vtutor-toolbar-btn:hover,
+.vtutor-toolbar-btn:focus {
+    background: #eef4f9;
+    border-color: #b4c4d3;
+}
+
+.vtutor-chat-history {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 14px;
+    background: linear-gradient(180deg, #fbfdff 0%, #f3f6fa 100%);
+    scroll-padding-bottom: 140px;
+}
+
+.vtutor-message {
+    display: flex;
+    margin-bottom: 12px;
+}
+
+.vtutor-user {
+    justify-content: flex-end;
+}
+
+.vtutor-system {
+    justify-content: flex-start;
+}
+
+.vtutor-msg-content {
+    max-width: min(88%, 980px);
+    border-radius: 16px;
+    padding: 14px 16px;
+    line-height: 1.65;
+    font-size: 15px;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+.vtutor-system .vtutor-msg-content {
+    background: #ffffff;
+    border: 1px solid var(--vtutor-border);
+    color: var(--vtutor-text);
+}
+
+.vtutor-user .vtutor-msg-content {
+    background: #0f3d66;
+    border: 1px solid #0f3d66;
+    color: #fff;
+}
+
+.vtutor-msg-actions {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 0 0;
+}
+
+.vtutor-msg-action-btn {
+    border: 1px solid #d4dde6;
+    background: #fff;
+    color: #17324c;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.vtutor-msg-action-btn:hover,
+.vtutor-msg-action-btn.is-active {
+    background: #eef4f9;
+    border-color: #b7c8d8;
+}
+
+.vtutor-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--vtutor-border);
+    background: #fff;
+    color: #415466;
+}
+
+.vtutor-spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    border: 2px solid #bfd1e3;
+    border-top-color: #0f3d66;
+    animation: vtutor-spin .85s linear infinite;
+}
+
+@keyframes vtutor-spin {
+    to { transform: rotate(360deg); }
+}
+
+.vtutor-voice-status {
+    padding: 8px 14px;
+    border-top: 1px solid var(--vtutor-border);
+    background: #f6f9fc;
+    color: #35516b;
+    font-size: 13px;
+}
+
+.vtutor-input-area {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 10px;
+    align-items: flex-end;
+    padding: 12px 14px calc(14px + var(--vtutor-safe-bottom)) 14px;
+    border-top: 1px solid var(--vtutor-border);
+    background: #fff;
+    min-width: 0;
+    overflow: visible;
+}
+
+.vtutor-container-standalone .vtutor-input-area {
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+}
+
+.vtutor-voice-btn,
+.vtutor-send-btn {
+    min-width: 46px;
+    width: 46px;
+    flex: 0 0 46px;
+    height: 46px;
+    border: 1px solid #c3d2df;
+    border-radius: 12px;
+    background: #fff;
+    color: #17324c;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vtutor-voice-btn {
+    display: none;
+}
+
+.vtutor-device-mobile .vtutor-voice-btn {
+    display: inline-flex;
+}
+
+.vtutor-device-desktop .vtutor-voice-btn {
+    display: none !important;
+}
+
+.vtutor-voice-btn:hover,
+.vtutor-send-btn:hover,
+.vtutor-voice-btn.is-active {
+    background: #eef4f9;
+    border-color: #aebfd1;
+}
+
+#vtutor-user-input {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    min-height: 46px;
+    max-height: 96px;
+    resize: none;
+    border: 1px solid #c3d2df;
+    border-radius: 14px;
+    padding: 12px 14px;
+    background: #fff;
+    color: var(--vtutor-text);
+    line-height: 1.5;
+}
+
+#vtutor-user-input:focus,
+.vtutor-mode-select:focus {
+    outline: none;
+    border-color: #7ca2c6;
+    box-shadow: 0 0 0 3px rgba(73, 121, 171, 0.12);
+}
+
+.vtutor-footer {
+    padding: 8px 14px 12px 14px;
+    background: #fff;
+    color: #6b7986;
+    font-size: 12px;
+}
+
+.vtutor-container-standalone .vtutor-footer {
+    display: none;
+}
+
+.vtutor-floating-launcher {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9998;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 18px 0 12px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, #163f63 0%, #0f3150 100%);
+    color: #fff;
+    border: 1px solid rgba(8, 30, 51, 0.68);
+    box-shadow: 0 18px 36px rgba(9, 35, 58, 0.34);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .01em;
+}
+
+.vtutor-floating-launcher:hover,
+.vtutor-floating-launcher:focus {
+    color: #fff;
+    text-decoration: none;
+    filter: brightness(1.03);
+}
+
+.vtutor-launcher-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.12);
+}
+
+.vtutor-launcher-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.vtutor-launcher-label {
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .vtutor-title { font-size: 15px; }
+    .vtutor-subtitle { max-width: 42vw; }
+}
+
+@media (max-width: 767px) {
+    body.vtutor-standalone-body {
+        padding: 0 !important;
+    }
+
+    .vtutor-container,
+    .vtutor-container-standalone,
+    .vtutor-window-expanded {
+        width: 100vw !important;
+        height: var(--vtutor-mobile-vh) !important;
+        min-height: var(--vtutor-mobile-vh) !important;
+        max-height: var(--vtutor-mobile-vh) !important;
+        inset: 0 !important;
+        border-radius: 0 !important;
+        border: none !important;
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+    }
+
+    .vtutor-header {
+        padding: 8px 10px;
+        align-items: center;
+        min-height: 52px;
+    }
+
+    .vtutor-brand-mark {
+        width: 30px;
+        height: 30px;
+        flex-basis: 30px;
+    }
+
+    .vtutor-badge-row,
+    .vtutor-subtitle,
+    .vtutor-coursebar,
+    .vtutor-footer {
+        display: none;
+    }
+
+    .vtutor-title {
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+    .vtutor-header-actions {
+        gap: 4px;
+    }
+
+    #vtutor-float-btn,
+    #vtutor-expand-btn {
+        display: none;
+    }
+
+    .vtutor-icon-btn,
+    .vtutor-toolbar-btn {
+        padding: 7px 8px;
+    }
+
+    .vtutor-modebar,
+    .vtutor-chat-history,
+    .vtutor-input-area,
+    .vtutor-loading,
+    .vtutor-voice-status {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .vtutor-modebar {
+        grid-template-columns: minmax(0,1fr) auto;
+        gap: 8px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    .vtutor-mode-label {
+        display: none;
+    }
+
+    .vtutor-mode-select {
+        max-width: none;
+        width: 100%;
+    }
+
+    .vtutor-modebar-actions {
+        justify-content: flex-end;
+    }
+
+    .vtutor-toolbar-btn {
+        min-height: 40px;
+        padding: 0 12px;
+        gap: 6px;
+    }
+
+    .vtutor-msg-content {
+        max-width: 100%;
+        font-size: 14px;
+    }
+
+    .vtutor-msg-actions {
+        flex-wrap: wrap;
+    }
+
+    .vtutor-msg-action-btn {
+        min-height: 42px;
+    }
+
+    .vtutor-chat-history {
+        scroll-padding-bottom: 120px;
+    }
+
+    .vtutor-input-area {
+        gap: 8px;
+        align-items: center;
+        flex-wrap: nowrap;
+        padding-top: 10px;
+        padding-bottom: calc(10px + var(--vtutor-safe-bottom));
+        position: sticky;
+        bottom: 0;
+    }
+
+    #vtutor-user-input {
+        min-height: 44px;
+        max-height: 84px;
+        padding: 10px 12px;
+    }
+
+    .vtutor-voice-btn,
+    .vtutor-send-btn {
+        min-width: 44px;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        flex: 0 0 44px;
+    }
+
+    .vtutor-floating-launcher {
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+        width: calc(100% - 24px);
+        justify-content: center;
+        border-radius: 12px;
+        padding-right: 12px;
+    }
+}
+
+
+.vtutor-container-standalone .vtutor-chat-history {
+    min-height: 0;
+}
+
+
+@media (min-width: 768px) {
+    .vtutor-container-standalone {
+        inset: 8px !important;
+    }
+}
+.vtutor-container-standalone .vtutor-input-area {
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    html.vtutor-standalone-html,
+    body.vtutor-standalone-body {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .vtutor-container-standalone,
+    .vtutor-window-expanded {
+        height: 100% !important;
+        min-height: 100% !important;
+        max-height: 100% !important;
+    }
+
+    .vtutor-container-standalone .vtutor-chat-history {
+        padding-bottom: 10px;
+    }
+}
+
+</style>

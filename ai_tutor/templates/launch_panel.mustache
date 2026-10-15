@@ -1,0 +1,166 @@
+<div class="vtutor-launch-entry" data-courseid="{{courseid}}" data-chaturl="{{chaturl}}" data-popupname="{{popupwindowname}}" data-launcherlabel="{{launchwindowlabel}}" data-launchertitle="{{launchwindowlabel}}" data-manageurl="{{manageurl}}" data-canmanage="{{#canmanage}}1{{/canmanage}}{{^canmanage}}0{{/canmanage}}">
+    <div class="vtutor-launch-entry-card">
+        <div class="vtutor-launch-entry-head">
+            <div class="vtutor-launch-entry-mark"><img src="{{logoimage}}" alt="{{institutionname}}"></div>
+            <div class="vtutor-launch-entry-copy">
+                <div class="vtutor-launch-entry-title">VTutor Pro</div>
+                <div class="vtutor-launch-entry-subtitle">Asistente profesional del curso</div>
+            </div>
+        </div>
+        <div class="vtutor-launch-entry-actions">
+            <button type="button" class="vtutor-action-btn vtutor-action-btn-primary vtutor-open-popup">{{launchwindowlabel}}</button>
+            <a href="{{chaturl}}" class="vtutor-action-btn vtutor-action-btn-secondary" target="_blank" rel="noopener">{{launchsamepagelabel}}</a>
+            {{#canmanage}}<a href="{{manageurl}}" class="vtutor-action-btn vtutor-action-btn-tertiary">{{controlcenterlabel}}</a>{{/canmanage}}
+            {{#canadmin}}<a href="{{adminurl}}" class="vtutor-action-btn vtutor-action-btn-tertiary" target="_blank" rel="noopener">{{openglobalconfigbutton}}</a>{{/canadmin}}
+        </div>
+    </div>
+</div>
+
+<style>
+.vtutor-launch-entry { margin: 0; }
+.vtutor-launch-entry-card {
+    border: 1px solid #cfd9e3;
+    border-radius: 7px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    box-shadow: 0 10px 24px rgba(15, 23, 42, .06);
+    padding: 14px;
+}
+.vtutor-launch-entry-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+.vtutor-launch-entry-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #0f3d66;
+    border: 1px solid rgba(15, 61, 102, 0.16);
+    flex: 0 0 46px;
+}
+.vtutor-launch-entry-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.vtutor-launch-entry-copy {
+    min-width: 0;
+}
+.vtutor-launch-entry-title {
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #123451;
+}
+.vtutor-launch-entry-subtitle {
+    font-size: 13px;
+    color: #536577;
+    margin-top: 2px;
+}
+.vtutor-launch-entry-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.vtutor-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid #c7d3df;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    transition: .15s ease;
+}
+.vtutor-action-btn:hover,
+.vtutor-action-btn:focus {
+    text-decoration: none;
+}
+.vtutor-action-btn-primary {
+    background: linear-gradient(180deg, #163d5e 0%, #0f2f4a 100%);
+    color: #fff;
+    border-color: #0d2f4f;
+    box-shadow: 0 6px 14px rgba(13, 47, 79, .14);
+}
+.vtutor-action-btn-primary:hover,
+.vtutor-action-btn-primary:focus {
+    color: #fff;
+    filter: brightness(1.03);
+}
+.vtutor-action-btn-secondary {
+    background: #fff;
+    color: #17324c;
+}
+.vtutor-action-btn-secondary:hover,
+.vtutor-action-btn-secondary:focus,
+.vtutor-action-btn-tertiary:hover,
+.vtutor-action-btn-tertiary:focus {
+    background: #eff4f8;
+    color: #17324c;
+}
+.vtutor-action-btn-tertiary {
+    background: #f7fafc;
+    color: #29435c;
+}
+.vtutor-page-launcher {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 9998;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 18px 0 12px;
+    border-radius: 8px;
+    background: linear-gradient(180deg, #163d5e 0%, #0f2f4a 100%);
+    color: #fff;
+    border: 1px solid rgba(8, 30, 51, 0.68);
+    box-shadow: 0 18px 36px rgba(9, 35, 58, 0.34);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .01em;
+}
+.vtutor-page-launcher:hover,
+.vtutor-page-launcher:focus {
+    color: #fff;
+    text-decoration: none;
+    filter: brightness(1.03);
+}
+.vtutor-page-launcher-mark {
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(255,255,255,.10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,255,255,.12);
+}
+.vtutor-page-launcher-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+@media (max-width: 767px) {
+    .vtutor-action-btn { width: 100%; }
+    .vtutor-page-launcher {
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+        justify-content: center;
+        width: calc(100% - 24px);
+        max-width: none;
+        border-radius: 10px;
+    }
+}
+</style>

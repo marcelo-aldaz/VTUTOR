@@ -1,0 +1,10 @@
+VTutor Pro VZona v10.6.5 STABLE / build 2026082406
+
+PHP: 71/71 OK
+AMD JavaScript: 4/4 OK
+XMLDB: OK
+Lang ES/EN: 464/464, parity OK
+Moodle metadata: component=block_ai_tutor; version=2026082406; maturity=MATURITY_STABLE(200)
+QA6->STABLE metadata-only hash audit: PASS; 0 unexpected functional changes
+Upgrade 2026082406: savepoint-only
+LIVE acceptance inherited from FINAL QA6: PASS
